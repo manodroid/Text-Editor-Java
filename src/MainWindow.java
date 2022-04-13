@@ -1,10 +1,12 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
 public class MainWindow {
-    private static final JTextArea textArea = new JTextArea();
+    private static final JTextPane textArea = new JTextPane();
     private static final JFrame frame = new JFrame("unnamed");
     protected static Font font = textArea.getFont();
 
@@ -29,19 +31,40 @@ public class MainWindow {
         frame.addWindowListener(exitListener);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        //scrolling text area wrapper
-        textArea.setLineWrap(true);
-        // textArea.setWrapStyleWord(true);
-       // textArea.setFont(new Font("Bodoni", 0, 18));
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        frame.add(scrollPane);
-
         //status board
         StatusBar stBar = new StatusBar(textArea);
         stBar.setLayout(new BoxLayout(stBar, BoxLayout.X_AXIS));
         stBar.setBorder(BorderFactory.createEtchedBorder());
+
+        textArea.setFont(new Font("Bodoni", Font.PLAIN, 18));
+        //add change listeners for calling status methods
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                stBar.updatePosition();
+            }
+        });
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {
+                stBar.updateWordChar();
+                stBar.updatePosition();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                stBar.updatePosition();
+                stBar.updateWordChar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {}
+        });
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        frame.add(scrollPane);
 
         //menu bars and its elements to the frame
         menuBar.add(filesMenu);

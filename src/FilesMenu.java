@@ -18,11 +18,11 @@ public class FilesMenu extends JMenu {
     private final JMenuItem rename = new JMenuItem("Rename");
     private final JMenuItem exit = new JMenuItem("Exit");
     private final JFileChooser fileChooser = new JFileChooser();
-    JTextArea workingArea;
+    JTextPane workingArea;
     private final File workingDir;
     File workingFile;
 
-    FilesMenu(File[] files, JTextArea workingArea) {
+    FilesMenu(File[] files, JTextPane workingArea) {
         super("Files");
         add(newFile);
         add(open);

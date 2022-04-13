@@ -11,10 +11,10 @@ public class ToolsMenu extends JMenu {
     private final JMenuItem cut = new JMenuItem("Cut");
     private final JMenuItem copy = new JMenuItem("Copy");
     private final JMenuItem paste = new JMenuItem("Paste");
-    static JTextArea  workingArea;
+    static JTextPane workingArea;
     Highlighter lighter;
 
-    public ToolsMenu(String name, JTextArea textArea) {
+    public ToolsMenu(String name, JTextPane textArea) {
         super(name);
         add(replace);
         add(find);
@@ -68,7 +68,7 @@ public class ToolsMenu extends JMenu {
         workingArea.setText(content.replaceAll(wordToReplace.getText(), replaceWith.getText())); //add word boundaries
     }
 
-    public void findWord(JTextArea workingArea) throws BadLocationException {
+    public void findWord(JTextPane workingArea) throws BadLocationException {
         String text = workingArea.getText();
         String  word = JOptionPane.showInputDialog(null, "Enter the word you are looking for: ",
                 "Find", JOptionPane.PLAIN_MESSAGE);

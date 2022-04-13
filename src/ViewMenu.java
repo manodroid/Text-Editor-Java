@@ -7,9 +7,9 @@ public class ViewMenu extends JMenu{
     private final JCheckBoxMenuItem theme = new JCheckBoxMenuItem("Dark Mode");
     private final JMenuItem increaseFontSize = new JMenuItem("Increase Font Size");
     private final JMenuItem decreaseFontSize = new JMenuItem("Decrease Font Size");
-    static JTextArea workingArea;
+    static JTextPane workingArea;
 
-    public ViewMenu(String name, JTextArea workingArea){
+    public ViewMenu(String name, JTextPane workingArea){
         super(name);
         add(increaseFontSize);
         add(decreaseFontSize);

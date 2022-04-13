@@ -1,38 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.*;
 
 public class StatusBar extends JPanel {
    private final JLabel wordChars = new JLabel();
    private final JLabel position = new JLabel();
-   static JTextArea workingArea;
+   static JTextPane workingArea;
 
 
-    public StatusBar(JTextArea textArea){
-        workingArea = textArea;
+   public StatusBar(JTextPane textPane){
+        workingArea = textPane;
         setLayout(new BorderLayout());
         add(position, BorderLayout.LINE_END);
         add(wordChars, BorderLayout.LINE_START);
     }
 
+
     public void updateWordChar(){
-        Timer timer = new Timer(3000, e -> wordChars.setText("Words: "+ countWords(workingArea) + "/Chars: " + workingArea.getText().length()));
-        timer.start();
+         wordChars.setText("Words: " + countWords() + "/Chars: " + workingArea.getText().length());
     }
 
     public void updatePosition(){
-
-        Timer timer = new Timer(3000, e -> position.setText("Positon "+ workingArea.getLineCount()+","+workingArea.getCaretPosition()+"\t"));
-        timer.start();
+       Point point = new Point(workingArea.getX(), workingArea.getY());
+       //int position = workingArea.viewToModel2D(point);
+       position.setText("Positon "+workingArea.getCaretPosition()+"\t");
     }
 
-    public int countWords(JTextArea textArea){
-        int counter = 0;
-        String[] lines = textArea.getText().split(System.getProperty("line.separator"));
-        for (String line:lines){
-            if (!line.trim().isEmpty()){
-                counter += line.trim().replaceAll("[^a-zA-Z0-9]+", " ").split(" ").length;}
-        }
-        return counter;
+    public int countWords(){
+        Pattern p = Pattern.compile("\\w+");
+        Matcher m = p.matcher(workingArea.getText());
+        return (int) m.results().count();
     }
 
 }
