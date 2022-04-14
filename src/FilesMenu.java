@@ -2,10 +2,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -83,7 +80,7 @@ public class FilesMenu extends JMenu {
         workingFile = fileChooser.getSelectedFile();
         if (file != null){
             try {
-                workingArea.read(new FileReader(file.getAbsolutePath()), null);
+                workingArea.read(new BufferedReader(new FileReader(file.getAbsolutePath())), null);
             } catch (IOException ioe){
                 ioe.printStackTrace();
             }
@@ -116,8 +113,9 @@ public class FilesMenu extends JMenu {
                 if(!(workingFile.getAbsolutePath().endsWith(suffix)))
                     workingFile = new File(fileChooser.getSelectedFile() + suffix);
                 FileWriter fw = new FileWriter(workingDir + File.separator + workingFile.getName());
-                fw.write(workingArea.getText());
-                fw.close();
+                BufferedWriter bfw = new BufferedWriter(fw);
+                bfw.write(workingArea.getText());
+                bfw.close();
                 MainWindow.updateTitle(workingFile);
             } catch (IOException ioe){
                 ioe.printStackTrace();
