@@ -1,6 +1,9 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.Utilities;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -43,6 +46,55 @@ public class MainWindow {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 stBar.updatePosition();
+            }
+        });
+        //mouse listener used for the spell checker
+        textArea.addMouseListener(new MouseAdapter() {
+
+            // get the text wich is misspelled
+            public void highlightClick(MouseEvent e){
+                if (SwingUtilities.isRightMouseButton(e)){
+                    try {
+                        StyledDocument doc = textArea.getStyledDocument();
+                        int offset = textArea.viewToModel2D(e.getPoint()); //location of click
+                        //set selection to that specific word
+                        int start = Utilities.getWordStart(textArea, offset);
+                        int end = Utilities.getWordEnd(textArea, offset);
+                        textArea.setSelectionStart(start);
+                        textArea.setSelectionStart(end);
+                        //obtain the value of the selected word
+                        String misspelled = doc.getText(start, end-start);
+                        //create a JComboBox
+                        Object[] suggestions = SpellCheck.suggestions(misspelled).toArray();
+                        String correction = String.valueOf(JOptionPane.showInputDialog(
+                                null, "Choose one word", "Correct the word",
+                                JOptionPane.QUESTION_MESSAGE, null, suggestions, JOptionPane.NO_OPTION));
+                        // replace the misspelled/selected word with the correction selected by user
+                        doc.remove(start, end - start);
+                        doc.insertString(start, correction, null);
+                        // reset caret so the user can continue writing
+                        textArea.setCaretPosition(start+correction.length());
+                    } catch (BadLocationException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                highlightClick(e);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e){
+                super.mousePressed(e);
+                highlightClick(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e){
+                super.mouseReleased(e);
+                highlightClick(e);
             }
         });
         textArea.getDocument().addDocumentListener(new DocumentListener() {

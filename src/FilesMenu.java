@@ -78,6 +78,7 @@ public class FilesMenu extends JMenu {
         fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
         workingFile = fileChooser.getSelectedFile();
+
         if (file != null){
             try {
                 workingArea.read(new BufferedReader(new FileReader(file.getAbsolutePath())), null);

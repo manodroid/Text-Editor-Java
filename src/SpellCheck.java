@@ -3,23 +3,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SpellCheck {
-    public static void main(String[] args) {
-        // a hashset for storing words and a buffReader for reading the dictionary
-        Set<String> words = generateWordList("/home/guts/Text-Editor-Java/src/wordlist.txt");
-        // create hashmap with each suggestion sorted by coefficient
-    }
+    // a hashset for storing words and a buffReader for reading the dictionary
+    static Set<String> words = generateWordList("/home/guts/Text-Editor-Java/src/wordlist.txt");
+    // create hashmap with each suggestion sorted by coefficient
 
-
-    public static List<String> suggestions(String input, Set<String> dictionary){
+    public static List<String> suggestions(String input){
         // generating suggestions by creating all mutations of the given input
         // using the Norvig's algorithm
-        Set<String> edits = new HashSet<>();
-        for(int i=0; i < input.length(); ++i) edits.add(input.substring(0, i) + input.substring(i+1));
-        for(int i=0; i < input.length()-1; ++i) edits.add(input.substring(0, i) + input.charAt(i+1) + input.charAt(i) + input.substring(i+2));
-        for(int i=0; i < input.length(); ++i) for(char c='a'; c <= 'z'; ++c) edits.add(input.substring(0, i) + c + input.substring(i+1));
-        for(int i=0; i <= input.length(); ++i) for(char c='a'; c <= 'z'; ++c) edits.add(input.substring(0, i) + c + input.substring(i));
-        edits.removeIf(edit -> !dictionary.contains(edit));
-        return new ArrayList<>(edits);
+        Set<String> edits = new HashSet<>(); //generate mutations of the input
+        for(int i=0; i < input.length(); ++i) edits.add((input.substring(0, i) + input.substring(i+1)));
+        for(int i=0; i < input.length()-1; ++i) edits.add((input.substring(0, i) + input.charAt(i+1) + input.charAt(i) + input.substring(i+2)));
+        for(int i=0; i < input.length(); ++i) for(char c='a'; c <= 'z'; ++c) edits.add((input.substring(0, i) + c + input.substring(i+1)));
+        for(int i=0; i <= input.length(); ++i) for(char c='a'; c <= 'z'; ++c) edits.add((input.substring(0, i) + c + input.substring(i)));
+        edits.removeIf(edit -> !words.contains(edit));
+        //filter them based on the similarity coefficient
+        return edits.stream().sorted((s, t1) -> (int) (filterSuggestions(input, s) - filterSuggestions(input, t1)))
+                             .collect(Collectors.toList());
     }
 
 

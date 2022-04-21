@@ -14,7 +14,7 @@ public class ToolsMenu extends JMenu {
     private final JMenuItem checkSpelling = new JMenuItem("Check Spelling");
     static JTextPane workingArea;
     Highlighter lighter;
-    
+
     public ToolsMenu(String name, JTextPane textArea) {
         super(name);
         add(replace);
@@ -103,13 +103,14 @@ public class ToolsMenu extends JMenu {
         Set<String> misspelled = Arrays.stream(text.split("\\s+")) //filter misspelled words
                                 .filter(word -> !dictionary.contains(word))
                                 .collect(Collectors.toSet());
-
         for (String word:misspelled){//find all occurrences/indexes for each word and underline them
-            int index = text.indexOf(word);
+            int index = text.indexOf(word); //underline doesnt work because spaces or smth
             while (index >= 0){
+                System.out.print(index+" ");
                 lighter.addHighlight(index,index + word.length(), new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
                 index = text.indexOf(word, index+1);
             }
+            System.out.println("next");
         }
     }
 }
