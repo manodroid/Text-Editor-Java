@@ -30,6 +30,7 @@ The following are some of the features we included in this project:
     - Copy
     - Paste
     - Cut
+    - Spell Check
 - View Tab
     - Increase Font Size
     - Decrease Font Size
@@ -38,6 +39,10 @@ The following are some of the features we included in this project:
 - Help Tab
     - Shortcuts
     - About
+
+In the last commit another tool was added, now the user can check if he has misspelled any word during writing. The whole text is analyzed and the wrong
+words are highlighter in red. Then it is taken a step further because the user can right-click the highlighted text and then select a correction for the
+word. This way the correction can be more accurate and with fewer keystrokes.
 <br>
 - Text Fields, Keyboard Events, Personal Directory, Update Title on file change, word count, character count, line count, and more. :chart_with_upwards_trend:
 
