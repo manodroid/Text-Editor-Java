@@ -83,14 +83,11 @@ public class ToolsMenu extends JMenu {
         String  word = JOptionPane.showInputDialog(null, "Enter the word you are looking for: ",
                 "Find", JOptionPane.PLAIN_MESSAGE);
         int index = text.indexOf(word);
-        System.out.println(index);
         if (index >=0 ){ //check if found
             while (index >= 0){
                 lighter.addHighlight(index, index + word.length(), new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE));
                 index = text.indexOf(word, index+1);
-                System.out.println(index+" "+word);
             }
-            System.out.println("broke");
         } else {
             JOptionPane.showMessageDialog(null, "Word not found!");
         }
@@ -106,11 +103,9 @@ public class ToolsMenu extends JMenu {
         for (String word:misspelled){//find all occurrences/indexes for each word and underline them
             int index = text.indexOf(word); //underline doesnt work because spaces or smth
             while (index >= 0){
-                System.out.print(index+" ");
                 lighter.addHighlight(index,index + word.length(), new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
                 index = text.indexOf(word, index+1);
             }
-            System.out.println("next");
         }
     }
 }

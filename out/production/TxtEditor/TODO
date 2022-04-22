@@ -1,6 +1,0 @@
-improve positon of cursor and status bar positions
-refactor code make some methods smaller and simplify the relations of each component
-make keylistener to remove any type of highlighter
-analyze text entered between spacebars or offset
-make spell checker specific highlighter
-implement undo-redo, spelling correction suggestion, keylistener when find is used

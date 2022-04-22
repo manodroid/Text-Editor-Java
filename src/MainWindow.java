@@ -39,7 +39,7 @@ public class MainWindow {
         stBar.setLayout(new BoxLayout(stBar, BoxLayout.X_AXIS));
         stBar.setBorder(BorderFactory.createEtchedBorder());
 
-        textArea.setFont(new Font("Bodoni", Font.PLAIN, 18));
+        textArea.setFont(new Font("Bondon", Font.PLAIN, 18));
         //add change listeners for calling status methods
         textArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -51,7 +51,7 @@ public class MainWindow {
         //mouse listener used for the spell checker
         textArea.addMouseListener(new MouseAdapter() {
 
-            // get the text wich is misspelled
+            // get the text which is misspelled
             public void highlightClick(MouseEvent e){
                 if (SwingUtilities.isRightMouseButton(e)){
                     try {
@@ -63,7 +63,7 @@ public class MainWindow {
                         textArea.setSelectionStart(start);
                         textArea.setSelectionStart(end);
                         //obtain the value of the selected word
-                        String misspelled = doc.getText(start, end-start);
+                        String misspelled = doc.getText(start, end-start).toLowerCase();
                         //create a JComboBox
                         Object[] suggestions = SpellCheck.suggestions(misspelled).toArray();
                         String correction = String.valueOf(JOptionPane.showInputDialog(
